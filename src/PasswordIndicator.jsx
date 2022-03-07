@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import "./ui/PasswordIndicator.css";
-import { createElement } from "react";
+import { createElement, useRef, useEffect, useState } from "react";
 import { waitFor } from "./helpers/waitFor";
 
 export default function PasswordIndicator({
@@ -16,6 +16,9 @@ export default function PasswordIndicator({
     lvl4Txt,
     lvl5Txt
 }) {
+    const [canRender, setCanRender] = useState(false);
+    const passwordIndicator = useRef(null);
+    const passwordText = useRef(null);
     let maxLevels = 0;
 
     if (containDigit === true) {
@@ -45,13 +48,11 @@ export default function PasswordIndicator({
             const passwordStrength = new Set();
 
             function feedbackTxt(text) {
-                const feedbackText = document.querySelector(".password-indicator__text");
-                feedbackText.innerHTML = text;
+                passwordText.current.innerHTML = text;
             }
 
             function updateIndicator(level) {
-                const indicator = document.querySelector(".password-indicator");
-                indicator.dataset.level = level;
+                passwordIndicator.current.dataset.level = level;
                 if (maxLevels === 5) {
                     level === 0 && feedbackTxt("");
                     level === 1 && feedbackTxt(lvl1Txt.value);
@@ -82,13 +83,24 @@ export default function PasswordIndicator({
         }, 300);
     }
 
-    waitFor("." + className, addIndicator, document);
-    return (
-        <div className="password-indicator">
-            {[...Array(maxLevels)].map(index => (
-                <div className="password-indicator__level" key={index}></div>
-            ))}
-            <span className="mx-text password-indicator__text"></span>
-        </div>
-    );
+    useEffect(() => {
+        console.info({ passwordIndicator });
+        if (passwordIndicator) {
+            setCanRender(true);
+            waitFor("." + className, addIndicator, document);
+        }
+    }, [passwordIndicator]);
+
+    if (canRender) {
+        return (
+            <div className="password-indicator" ref={passwordIndicator}>
+                {[...Array(maxLevels)].map(index => (
+                    <div className="password-indicator__level" key={index}></div>
+                ))}
+                <span className="mx-text password-indicator__text" ref={passwordText}></span>
+            </div>
+        );
+    } else {
+        return <div className="password-indicator"></div>;
+    }
 }
