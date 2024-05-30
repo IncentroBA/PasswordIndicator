@@ -1,15 +1,16 @@
 {
     "name": "passwordindicator",
     "widgetName": "PasswordIndicator",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Display a visual password indicator while inserting a (new) password",
-    "copyright": "Incentro 2022",
+    "copyright": "2024 Incentro International BV",
     "author": "Rob Duits",
     "engines": {
-        "node": ">=12"
+        "node": ">=16"
     },
+    "license": "MIT",
     "config": {
-        "projectPath": "../..//",
+        "projectPath": "../../",
         "mendixHost": "http://localhost:8080",
         "developmentPort": "3000"
     },
@@ -22,11 +23,24 @@
         "prerelease": "npm run lint",
         "release": "pluggable-widgets-tools release:web"
     },
-    "license": "MIT",
     "devDependencies": {
-        "@mendix/pluggable-widgets-tools": "^9.11.0"
+        "@mendix/pluggable-widgets-tools": "^10.7.2"
     },
     "dependencies": {
-        "classnames": "^2.2.6"
+        "classnames": "^2.5.1"
+    },
+    "resolutions": {
+        "react": "18.2.0",
+        "react-native": "0.72.7",
+        "react-dom": "18.2.0",
+        "@types/react": "18.2.0",
+        "@types/react-dom": "18.2.0"
+    },
+    "overrides": {
+        "react": "18.2.0",
+        "react-native": "0.72.7",
+        "react-dom": "18.2.0",
+        "@types/react": "18.2.0",
+        "@types/react-dom": "18.2.0"
     }
 }
